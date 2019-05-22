@@ -5,10 +5,9 @@
 We are interested in quantifying complexity of network or graph data e.g. traffic, family or business network.
 
 
-## Ideas
+## Idea
 
-1) Give an overview of the network packages in R and what kind of measures they 
-2) Implement some measures of the work Mark did on network measures.
-
-
+1) Implement the unweighted global efficieny measure for an igraph network (reference)
+- naive implementation, using the average inverse shortest path between all the nodes
+2) Implement the unweighted local efficiency measure.
 
