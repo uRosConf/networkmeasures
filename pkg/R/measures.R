@@ -6,7 +6,7 @@
 #' @param g a graph
 #'
 efficiency <- function(g){
-  n <- length(V(g))
+  n <- vcount(g)
   if (n==1) return(0)
   nd <- igraph::distance_table(g)$res
   d <- seq_along(nd)
@@ -18,7 +18,7 @@ efficiency <- function(g){
 #' @param g a graph
 local_efficiency <- function(g){
   sapply(V(g),function(node){
-    h <- induced_subgraph(g,c(neighbors(g,node)))
+    h <- induced_subgraph(g, c(neighbors(g,node)))
     efficiency(h)
   })
 }
@@ -35,26 +35,6 @@ vulnerability <- function(g){
   })
 }
 
-harmonic <- function(n){
-  sum(1/seq_len(n))
-}
-
-#' efficiency of the line graph
-#' @param n number of nodes (can be a vector of values)
-line_efficiency <- function(n){
-  sapply(n, function(ni) 2*harmonic(ni-1)/(ni-1) - 2/ni)
-}
-
-circle_efficiency <- function(n){
-  ce <- function(x){
-    h <- if (x%%2==0){
-      2*harmonic(x/2-1)/(x-1) + 2/(x*(x-1))
-    } else {
-      2*harmonic((x-1)/2)/(x-1)
-    }
-  }
-  sapply(n,ce)
-}
   
 #' Topological information content
 #' @param g a graph
