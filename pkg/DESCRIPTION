@@ -7,5 +7,7 @@ Maintainer: Mark van der Loo <mark.vanderloo@gmail.com>
 Description: Quantify Complexity of igraph networks
 License: GPL (>= 2)
 Imports: igraph
-Suggests: tinytest
+Suggests: tinytest, knitr
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr
+
