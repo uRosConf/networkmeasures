@@ -2,10 +2,15 @@
 {}
 
 
-#' efficiency of an undirected graph, according to Latora (2001)
-#' @param g a graph
+#' Efficiency of an undirected graph
+#' 
+#' The \code{efficiency}, according to Latora (2001), of an undirected network is calculated by summing the inverse distances
+#' for all node-node pairs of the graph and divide by the same metric for a fully connected network.
+#' @param g a graph of type \code{igraph}
+#' @references Latora, V., & Marchiori, M. (2001). Efficient behavior of small-world networks. Physical review letters, 87(19), 198701.
 #' @export
 efficiency <- function(g){
+  # TODO test if g is undirected?
   n <- vcount(g)
   if (n==1) return(0)
   nd <- igraph::distance_table(g)$res
@@ -21,18 +26,5 @@ local_efficiency <- function(g){
   sapply(V(g),function(node){
     h <- induced_subgraph(g, c(neighbors(g,node)))
     efficiency(h)
-  })
-}
-
-#' Network vulnerability per node, according to Gol'dshtein (2004) and 
-#' Latora et al (2005).
-#' @param g a graph
-#' @export
-vulnerability <- function(g){
-  e <- efficiency(g)
-  nodes <- V(g)
-  sapply(seq_along(nodes), function(i){
-    h <- delete_edges(g, incident_edges(g,nodes[i])[[1]])
-    1-efficiency(h)/e
   })
 }
