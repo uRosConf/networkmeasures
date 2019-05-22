@@ -10,4 +10,5 @@ Description: More details about what the package does. See
         for details on how to write this part.
 License: GPL (>= 2)
 Imports: igraph
+Suggests: tinytest
 RoxygenNote: 6.1.1
