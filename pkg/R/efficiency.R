@@ -8,7 +8,7 @@
 #' for all node-node pairs of the graph and divide by the same metric for a fully connected network.
 #' @param g a graph of type \code{igraph}
 #' @references Latora, V., & Marchiori, M. (2001). Efficient behavior of small-world networks. Physical review letters, 87(19), 198701.
-#' @seealso \code{\link{local_efficiency}}
+#' @family efficiency measure
 #' @export
 efficiency <- function(g){
   # TODO test if g is undirected?
@@ -22,10 +22,13 @@ efficiency <- function(g){
 
 #' local efficiency of a graph
 #' 
-#' For each node te , according to Latora (2001)
+#' \code{local_efficiency} is a generalized form of the measure defined by Latora (2001).
+#' For each node the efficiency of the egonetwork without the central node is calculated. 
+#' The Latora definition uses order = 1 (default).
 #' @param g a graph
-#' @param order the order of the neighborhood. 1 is are direct neighbors.
-#' @seealso \code{\link{efficiency}}
+#' @param order the order of the egonetwork. The default is taking only direct neighbors.
+#' @references Latora, V., & Marchiori, M. (2001). Efficient behavior of small-world networks. Physical review letters, 87(19), 198701.
+#' @family efficiency measure
 #' @export
 local_efficiency <- function(g, order = 1L){
   if (vcount(g) == 1){

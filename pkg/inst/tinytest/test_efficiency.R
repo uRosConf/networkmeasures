@@ -21,7 +21,6 @@ expect_equal(efficiency(g), e)
 g <- igraph::graph_from_literal(a)
 expect_equal(efficiency(g), 0)
 
-
 ## Local efficiency
 g <- igraph::graph_from_literal(a-b,b-c,c-a)
 expect_equal(local_efficiency(g), c(a=1, b=1,c=1))
