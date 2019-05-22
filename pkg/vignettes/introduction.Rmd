@@ -15,29 +15,95 @@ vignette: >
 library(networkmeasures)
 ```
 
-### Introduction
-This package is implementing metrics for assessing network complexity. It implements the following metrics: 
+# Introduction
 
- *global network efficency * $E_{glob}$ as a metric to describe the small world behavior as first described by Latora et al (2001). For a Graph $G$, the network efficency E is calculated as:
+This package is implementing metrics for assessing network complexity, as published by Latora et al (2001, 2005. Latora et al defined the following metrics:
 
-$$ E_{glob}(G)~=~\frac{\sum_{i\neq j \in G^{\epsilon_{ij}}}}{N(N-1)}~=~\frac{1}{N(N-1)}\sum\limits_{i \neq j \in G} \frac{1}{d_{ij}} $$
-Where $d_{ij}$ is the shortest path length between two points $i$ and $j$.
+## Efficiency
 
-This measure is normalized, dividing it by the efficiency of the ideal network $G_{id}$, in which all possible $N(N-1)/2$ edges are present. Thus $0 \leq E(G) \leq 1$.
+The network efficiency $E$ is desigend as a single metric to describe the small world behavior of a network. For a Graph $G$, the network efficency E is calculated as:
+
+$$ E(G)~=~\frac{\sum_{i\neq j \in G^{\epsilon_{ij}}}}{N(N-1)}~=~\frac{1}{N(N-1)}\sum\limits_{i \neq j \in G} \frac{1}{d_{ij}} $$
+Where $d_{ij}$ is the shortest path length between two points $i$ and $j$.It is normalized, by dividing with the efficiency of the ideal network $G_{id}$, in which all possible $N(N-1)/2$ edges are present. Thus $0 \leq E(G) \leq 1$.
+
+To examplify the interpretation, let's look at the `Koenigsberg` data set from the `igraphdata` package: It is the famous network of 7 bridges (edges) connecting the 4 districts (nodes) of the city Koenigsberg.  
+```{r}
+data("Koenigsberg", package = "igraphdata")
+plot(Koenigsberg)
+```
+We can see that the quarters are very well connected: A bridge is only missing between `Altstadt-Loebenicht`and `Vorstadt_Haberberg`. Otherwise, the graph would be complete. We can calculate $E(G)$ using the `efficiency()` function: 
+```{r}
+E <- efficiency(Koenigsberg)
+```
+As expected, we get a value of `r E`, which is very close to the ideal value of $1$. We can conclude that people were able to move around very efficiently, using the city's bridge system.
+
+## Local efficiency
+
+This idea can be expanded to investigate local properties of the graph. For this, we first need to define $G_i$ as the subgraph of the neighbors of i. For `Altstadt-Loebenicht` this graph would simply be:
+```{r}
+plot(make_ego_graph(Koenigsberg, order = 1, mindist = 1)[[1]])
+```
 
 
-Efficiency can be assessed both globally (as above), and locally for the local subgraphs of the network. The *local efficiency* is then defined as the average efficiency of all subgraphs, i.e.
+The `local_efficiency()` function in this package, calculates the efficiency of the subgraph of each node $i$ in $G_i$: 
+```{r}
+local_efficiency(Koenigsberg)
+```
+
+Following Latora et al (2001), a local efficiency score $E_{loc}$ for the entire network $G$, can then be calculated as the mean efficiency of all subgraphs, i.e.
+
+
 
 $$E_{loc}(G)~=~\frac{1}{N}\sum_{i \in G}E(G_i),~where  ~ i \notin G_i$$
+```{r}
+E_loc <- mean(local_efficiency(Koenigsberg))
+```
+Opposed to $E_{loc}$, the efficiency of the graph $E$ is labelled *global* efficiency $E_{glob}. Latora points out that these two are close for graphs with small differences between the distances. This holds for our example of `Koenigsberg`, where they are in fact identical:
+```{r}
+E_glob <- E
+data.frame(E_glob,E_loc)
+```
+
+$E_{glob}$ is the efficiency of a parallel system, while $E_{loc}$ is describing the efficiency of a sequential system. Let's take two more dataset from the igraph package to illustrate this:
+
+```{r}
+data("USairports", package = "igraphdata")
+plot(USairports)
+```
+
+```{r}
+data("UKfaculty", package = "igraphdata")
+plot(UKfaculty)
+```
+
+
+```{r}
+uk_loc <- local_efficiency(UKfaculty)
+efficiency(UKfaculty)
+mean(uk_loc)
+```
+
+```{r}
+us_loc <- local_efficiency(USairports)
+efficiency(USairports)
+mean(us_loc, na.rm = TRUE)
+```
+
 
 In addition, *network vulnerability* as decribed by Latora et al (2005) is implemented. In a vulnearability anlysis, the goal is to investigate the impact of *attacks* or *improvements* of infrastructure components on the performance of the overall network. *Efficiency* is used as the metric for network performance. A vulnarability score each node $i$ in $G$, is computed as:
 
 $$V(i)=1-\frac{E_{glob}(G_i)}{E_{glob}(G)}, ~where  ~ i \notin G_i$$
 
 ### Demo
-We will be working with the `Koenigsberg` data set from the `igraphdata` package: A network of the 4 districts of Koenigsberg, connected by the 7 bridges of the city.  
+
+
+
+
 ```{r}
-data("Koenigsberg", package = "igraphdata")
-plot(Koenigsberg)
+mean(local_efficiency(Koenigsberg))
 ```
-Using the shortest path
+
+```{r}
+data.frame(vulnerability(Koenigsberg))
+```
+
