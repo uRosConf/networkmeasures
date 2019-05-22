@@ -26,9 +26,11 @@ Where $d_{ij}$ is the shortest path length between two points $i$ and $j$.
 This measure is normalized, dividing it by the efficiency of the ideal network $G_{id}$, in which all possible $N(N-1)/2$ edges are present. Thus $0 \leq E(G) \leq 1$.
 
 
-Efficiency can be assessed both globally (as above), and locally
+Efficiency can be assessed both globally (as above), and locally for the local subgraphs of the network. The *local efficiency* is then defined as the average efficiency of all subgraphs, i.e.
 
-- *local efficiency* Latora et al (2001)
+$$E_{loc}~=~\frac{1}{N}\sum_{i \in G}E(G_i),~where  ~ i \notin G_i$$
+
+
 - *network vulnerability* Latora et al (2005) 
 
 ### Demo
