@@ -16,4 +16,27 @@ library(networkmeasures)
 ```
 
 ### Introduction
+This package is implementing metrics for assessing network complexity. It implements the following metrics: 
 
+ *global network efficency * $E_{glob}$ as a metric to describe the small world behavior as first described by Latora et al (2001). For a Graph $G$, the network efficency E is calculated as:
+
+$$ E_{glob}(G)~=~\frac{\sum_{i\neq j \in G^{\epsilon_{ij}}}}{N(N-1)}~=~\frac{1}{N(N-1)}\sum\limits_{i \neq j \in G} \frac{1}{d_{ij}} $$
+Where $d_{ij}$ is the shortest path length between two points $i$ and $j$.
+
+This measure is normalized, dividing it by the efficiency of the ideal network $G_{id}$, in which all possible $N(N-1)/2$ edges are present. Thus $0 \leq E(G) \leq 1$.
+
+
+Efficiency can be assessed both globally (as above), and locally for the local subgraphs of the network. The *local efficiency* is then defined as the average efficiency of all subgraphs, i.e.
+
+$$E_{loc}~=~\frac{1}{N}\sum_{i \in G}E(G_i),~where  ~ i \notin G_i$$
+
+
+- *network vulnerability* Latora et al (2005) 
+
+### Demo
+We will be working with the `Koenigsberg` data set from the `igraphdata` package: A network of the 4 districts of Koenigsberg, connected by the 7 bridges of the city.  
+```{r}
+data("Koenigsberg", package = "igraphdata")
+plot(Koenigsberg)
+```
+Using the shortest path
