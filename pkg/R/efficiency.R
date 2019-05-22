@@ -17,19 +17,21 @@ efficiency <- function(g){
   nd <- igraph::distance_table(g)$res
   d <- seq_along(nd)
   N <- n*(n-1)
-  2*sum(nd/d)/N
+  2*sum(nd/d)/N # times two because of directedness of the network
 }
 
 #' local efficiency of a graph
 #' 
 #' For each node te , according to Latora (2001)
 #' @param g a graph
+#' @param order the order of the neighborhood. 1 is are direct neighbors.
 #' @seealso \code{\link{efficiency}}
 #' @export
-local_efficiency <- function(g){
-  if (vcount(g) <= 1) return(0)
-  sapply(V(g),function(node){
-    h <- induced_subgraph(g, c(neighbors(g,node)))
-    efficiency(h)
-  })
+local_efficiency <- function(g, order = 1L){
+  if (vcount(g) == 1){
+    return(setNames(0, V(g)$name))
+  }
+  egos <- igraph::make_ego_graph(g, order = order, mindist = 1)
+  names(egos) <- V(g)$name
+  sapply(egos, efficiency)
 }
