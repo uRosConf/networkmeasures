@@ -1,6 +1,6 @@
 
 if (requireNamespace("tinytest", quietly=TRUE)){
-  test_package("tinytest")
+  tinytest::test_package("tinytest")
 }
 
 
