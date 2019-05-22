@@ -9,11 +9,17 @@ local_efficiency(g, order = 1L)
 \arguments{
 \item{g}{a graph}
 
-\item{order}{the order of the neighborhood. 1 is are direct neighbors.}
+\item{order}{the order of the egonetwork. The default is taking only direct neighbors.}
 }
 \description{
-For each node te , according to Latora (2001)
+\code{local_efficiency} is a generalized form of the measure defined by Latora (2001).
+For each node the efficiency of the egonetwork without the central node is calculated. 
+The Latora definition uses order = 1 (default).
+}
+\references{
+Latora, V., & Marchiori, M. (2001). Efficient behavior of small-world networks. Physical review letters, 87(19), 198701.
 }
 \seealso{
-\code{\link{efficiency}}
+Other efficiency measure: \code{\link{efficiency}}
 }
+\concept{efficiency measure}

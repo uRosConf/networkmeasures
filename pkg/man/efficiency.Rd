@@ -17,5 +17,6 @@ for all node-node pairs of the graph and divide by the same metric for a fully c
 Latora, V., & Marchiori, M. (2001). Efficient behavior of small-world networks. Physical review letters, 87(19), 198701.
 }
 \seealso{
-\code{\link{local_efficiency}}
+Other efficiency measure: \code{\link{local_efficiency}}
 }
+\concept{efficiency measure}

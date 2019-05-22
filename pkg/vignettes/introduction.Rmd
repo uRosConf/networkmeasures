@@ -13,6 +13,7 @@ vignette: >
 
 ```{r,echo=FALSE}
 library(networkmeasures)
+library(igraph)
 ```
 
 # Introduction
@@ -64,46 +65,30 @@ E_glob <- E
 data.frame(E_glob,E_loc)
 ```
 
-$E_{glob}$ is the efficiency of a parallel system, while $E_{loc}$ is describing the efficiency of a sequential system. Let's take two more dataset from the igraph package to illustrate this:
+$E_{glob}$ is the efficiency of a parallel system, while $E_{loc}$ is describing the efficiency of a sequential system. 
 
+## Network vulnerability
+
+In addition and building on the concept of efficiency, network vulnerability as decribed by Latora et al (2005) is implemented with the `vulnerability` function: In a vulnearability anlysis, the goal is to investigate the impact of *attacks* or *improvements* of infrastructure components on the performance of the overall network. *Efficiency* is used as the metric for network performance. A vulnarability score each node $i$ in $G$, is computed as:
+
+$$V(i)=1-\frac{E(G_i)}{E(G)}, ~where  ~ i \notin G_i$$
+What if the `Altstadt-Loebenicht` became impassable? The resulting network $G_i$ would be
 ```{r}
-data("USairports", package = "igraphdata")
-plot(USairports)
-```
-
-```{r}
-data("UKfaculty", package = "igraphdata")
-plot(UKfaculty)
-```
-
-
-```{r}
-uk_loc <- local_efficiency(UKfaculty)
-efficiency(UKfaculty)
-mean(uk_loc)
-```
-
-```{r}
-us_loc <- local_efficiency(USairports)
-efficiency(USairports)
-mean(us_loc, na.rm = TRUE)
+g_i <- delete_edges(Koenigsberg, incident_edges(Koenigsberg, 1)[[1]])
+plot(g_i) # see comments in vulnerability.. really skews the E score
+g_i_better <- delete_vertices(Koenigsberg, 1)
+plot(g_i_better)
 ```
 
 
-In addition, *network vulnerability* as decribed by Latora et al (2005) is implemented. In a vulnearability anlysis, the goal is to investigate the impact of *attacks* or *improvements* of infrastructure components on the performance of the overall network. *Efficiency* is used as the metric for network performance. A vulnarability score each node $i$ in $G$, is computed as:
-
-$$V(i)=1-\frac{E_{glob}(G_i)}{E_{glob}(G)}, ~where  ~ i \notin G_i$$
-
-### Demo
-
-
-
+Using this package, the scores for`Koenigsberg` can be calculated: 
 
 ```{r}
-mean(local_efficiency(Koenigsberg))
+vulnerability_nodes(Koenigsberg) #I'd say this makes more sense
 ```
 
-```{r}
-data.frame(vulnerability(Koenigsberg))
-```
+We can see that `Kneiphof` and `Lomse` are the most vulnerable nodes. If they became impassable, there would be less options to travel between `Altstadt-Loebenicht`and `Vorstadt_Haberberg`. 
+Mathematically, a destruction of the latter two would "improve" travelling in the city, as the remaining system of quarters and bridges would be a complete graph.
+
+
 
