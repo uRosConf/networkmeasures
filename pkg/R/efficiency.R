@@ -8,6 +8,7 @@
 #' for all node-node pairs of the graph and divide by the same metric for a fully connected network.
 #' @param g a graph of type \code{igraph}
 #' @references Latora, V., & Marchiori, M. (2001). Efficient behavior of small-world networks. Physical review letters, 87(19), 198701.
+#' @seealso \code{\link{local_efficiency}}
 #' @export
 efficiency <- function(g){
   # TODO test if g is undirected?
@@ -19,8 +20,11 @@ efficiency <- function(g){
   2*sum(nd/d)/N
 }
 
-#' local efficiency of a graph, according to Latora (2001)
+#' local efficiency of a graph
+#' 
+#' For each node te , according to Latora (2001)
 #' @param g a graph
+#' @seealso \code{\link{efficiency}}
 #' @export
 local_efficiency <- function(g){
   sapply(V(g),function(node){
