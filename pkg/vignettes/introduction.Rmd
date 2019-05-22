@@ -28,10 +28,11 @@ This measure is normalized, dividing it by the efficiency of the ideal network $
 
 Efficiency can be assessed both globally (as above), and locally for the local subgraphs of the network. The *local efficiency* is then defined as the average efficiency of all subgraphs, i.e.
 
-$$E_{loc}~=~\frac{1}{N}\sum_{i \in G}E(G_i),~where  ~ i \notin G_i$$
+$$E_{loc}(G)~=~\frac{1}{N}\sum_{i \in G}E(G_i),~where  ~ i \notin G_i$$
 
+In addition, *network vulnerability* as decribed by Latora et al (2005) is implemented. In a vulnearability anlysis, the goal is to investigate the impact of *attacks* or *improvements* of infrastructure components on the performance of the overall network. *Efficiency* is used as the metric for network performance. A vulnarability score each node $i$ in $G$, is computed as:
 
-- *network vulnerability* Latora et al (2005) 
+$$V(i)=1-\frac{E_{glob}(G_i)}{E_{glob}(G)}, ~where  ~ i \notin G_i$$
 
 ### Demo
 We will be working with the `Koenigsberg` data set from the `igraphdata` package: A network of the 4 districts of Koenigsberg, connected by the 7 bridges of the city.  
