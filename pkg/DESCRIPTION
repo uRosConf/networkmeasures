@@ -1,13 +1,11 @@
 Package: networkmeasures
 Type: Package
-Title: What the Package Does Using Title Case
-Version: 1.0
+Title: Quantify Complexity of igraph networks
+Version: 0.1
 Date: 2019-05-22
-Author: Mark van der Loo
+Author: Mark van der Loo, Edwin de Jonge, Benjamin Schwetz
 Maintainer: Mark van der Loo <mark.vanderloo@gmail.com>
-Description: More details about what the package does. See
-        <http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file>
-        for details on how to write this part.
+Description: Quantify Complexity of igraph networks
 License: GPL (>= 2)
 Imports: igraph
 RoxygenNote: 6.1.1
