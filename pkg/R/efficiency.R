@@ -27,6 +27,7 @@ efficiency <- function(g){
 #' @seealso \code{\link{efficiency}}
 #' @export
 local_efficiency <- function(g){
+  if (vcount(g) <= 1) return(0)
   sapply(V(g),function(node){
     h <- induced_subgraph(g, c(neighbors(g,node)))
     efficiency(h)
