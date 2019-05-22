@@ -32,3 +32,15 @@ local_efficiency <- function(g){
     efficiency(h)
   })
 }
+
+#' local efficiency of a graph
+#' 
+#' For each node te , according to Latora (2001)
+#' @param g a graph
+#' @seealso \code{\link{efficiency}}
+#' @export
+local_efficiency2 <- function(g, order = 1L){
+  egos <- igraph::make_ego_graph(g, order = order)
+  sapply(egos, efficiency)
+}
+
