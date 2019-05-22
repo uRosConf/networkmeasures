@@ -31,5 +31,5 @@ g <- igraph::graph_from_literal(a-b, b-c, c-d, d-e, d-f, b-f)
 expect_equivalent(local_efficiency(g), rep(0,6))
 
 g <- graph_from_literal(a)
-expect_equivalent(local_efficiency(g), 0)
+expect_equal(local_efficiency(g), c(a=0))
 
