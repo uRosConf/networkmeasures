@@ -1,0 +1,19 @@
+---
+title: "Introduction to Network Measures"
+author: "Mark van der Loo, Edwin de Jonge, Benjamin Schwetz"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{01_Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r,echo=FALSE}
+library(networkmeasures)
+```
+
+### Introduction
+

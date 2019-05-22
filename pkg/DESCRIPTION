@@ -2,7 +2,6 @@ Package: networkmeasures
 Type: Package
 Title: Quantify Complexity of igraph networks
 Version: 0.1
-Date: 2019-05-22
 Author: Mark van der Loo, Edwin de Jonge, Benjamin Schwetz
 Maintainer: Mark van der Loo <mark.vanderloo@gmail.com>
 Description: Quantify Complexity of igraph networks

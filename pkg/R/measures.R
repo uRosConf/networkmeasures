@@ -2,7 +2,7 @@
 {}
 
 
-#' efficiency of a graph, according to Latora (2001)
+#' efficiency of an undirected graph, according to Latora (2001)
 #' @param g a graph
 #'
 efficiency <- function(g){
