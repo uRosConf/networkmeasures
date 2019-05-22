@@ -11,13 +11,16 @@
 #' @family efficiency measure
 #' @export
 efficiency <- function(g){
-  # TODO test if g is undirected?
   n <- vcount(g)
   if (n==1) return(0)
   nd <- igraph::distance_table(g)$res
   d <- seq_along(nd)
   N <- n*(n-1)
-  2*sum(nd/d)/N # times two because of directedness of the network
+  if(is.directed(g)) {
+    sum(nd/d)/N
+    }  else {
+      2*sum(nd/d)/N # times two because of directedness of the network
+      } 
 }
 
 #' local efficiency of a graph
