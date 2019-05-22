@@ -4,7 +4,7 @@
 
 #' efficiency of an undirected graph, according to Latora (2001)
 #' @param g a graph
-#'
+#' @export
 efficiency <- function(g){
   n <- vcount(g)
   if (n==1) return(0)
@@ -16,6 +16,7 @@ efficiency <- function(g){
 
 #' local efficiency of a graph, according to Latora (2001)
 #' @param g a graph
+#' @export
 local_efficiency <- function(g){
   sapply(V(g),function(node){
     h <- induced_subgraph(g, c(neighbors(g,node)))
@@ -26,6 +27,7 @@ local_efficiency <- function(g){
 #' Network vulnerability per node, according to Gol'dshtein (2004) and 
 #' Latora et al (2005).
 #' @param g a graph
+#' @export
 vulnerability <- function(g){
   e <- efficiency(g)
   nodes <- V(g)
@@ -34,20 +36,3 @@ vulnerability <- function(g){
     1-efficiency(h)/e
   })
 }
-
-  
-#' Topological information content
-#' @param g a graph
-#' 
-#' @details
-#' The topological information content is defined as
-#' the logarithm of the size of the automorphism group to the base of 2.
-#' 
-information_content <- function(g){
-  log2(as.numeric(igraph::automorphisms(g)$group_size))
-}
-
-
-
-
-
