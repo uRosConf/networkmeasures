@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Mark van der Loo, Edwin de Jonge, Benjamin Schwetz" />
+
+<meta name="date" content="2019-05-25" />
+
+<title>Introduction to Network Measures</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to Network Measures</h1>
+<h4 class="author"><em>Mark van der Loo, Edwin de Jonge, Benjamin Schwetz</em></h4>
+<h4 class="date"><em>2019-05-25</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#efficiency">Efficiency</a><ul>
+<li><a href="#local-efficiency">Local efficiency</a></li>
+<li><a href="#global-and-local-efficiency-as-network-metrics">Global and Local efficiency as network metrics</a></li>
+</ul></li>
+<li><a href="#network-vulnerability">Network vulnerability</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<p>This package is implementing efficiency and vulnerability as metrics for assessing network complexity. These metrics were first described by Latora et al <span class="citation">(2001; 2005)</span> and Goldshtein et al <span class="citation">(2004)</span>.</p>
+<div id="efficiency" class="section level1">
+<h1>Efficiency</h1>
+<p>The network efficiency <span class="math inline">\(E\)</span> is desigend as a single metric to describe the small world behavior of a network. For a Graph <span class="math inline">\(G\)</span>, the network efficency E is calculated as:</p>
+<p><span class="math display">\[ E(G)~=~\frac{\sum_{i\neq j \in G^{\epsilon_{ij}}}}{N(N-1)}~=~\frac{1}{N(N-1)}\sum\limits_{i \neq j \in G} \frac{1}{d_{ij}} \]</span></p>
+<p>Where <span class="math inline">\(d_{ij}\)</span> is the shortest path length between two points <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. It is normalized, by dividing with the efficiency of the ideal network <span class="math inline">\(G_{id}\)</span>, in which all possible <span class="math inline">\(N(N-1)/2\)</span> edges are present. Thus <span class="math inline">\(0 \leq E(G) \leq 1\)</span>.</p>
+<p>To examplify the interpretation, we will use the <code>Koenigsberg</code> data set from the <code>igraphdata</code> package: It is the famous network of 7 bridges (edges) connecting the 4 districts (nodes) of the city Koenigsberg:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;Koenigsberg&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;igraphdata&quot;</span>)
+<span class="kw">plot</span>(Koenigsberg)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>We can see that the quarters are very well connected: A bridge is only missing between <code>Altstadt-Loebenicht</code>and <code>Vorstadt_Haberberg</code>. Otherwise, the graph would be complete. We can calculate <span class="math inline">\(E(G)\)</span> using the <code>efficiency()</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">efficiency</span>(Koenigsberg)</code></pre></div>
+<pre><code>## [1] 0.9166667</code></pre>
+<p>As expected, we get a value close to the ideal of <span class="math inline">\(1\)</span>. People were able to move around the city very efficiently, using the city’s bridge system.</p>
+<div id="local-efficiency" class="section level2">
+<h2>Local efficiency</h2>
+<p>This idea is expanded to investigate local properties of the graph. We define <span class="math inline">\(G_i\)</span> as the subgraph of the neighbors of i. For the node <code>Altstadt-Loebenicht</code> this graph would simply be:</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The <code>local_efficiency()</code> function in this package, calculates the efficiency of the subgraph of each node <span class="math inline">\(i\)</span> in <span class="math inline">\(G_i\)</span>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">local_efficiency</span>(Koenigsberg)</code></pre></div>
+<pre><code>## Altstadt-Loebenicht            Kneiphof  Vorstadt-Haberberg 
+##           1.0000000           0.8333333           1.0000000 
+##               Lomse 
+##           0.8333333</code></pre>
+</div>
+<div id="global-and-local-efficiency-as-network-metrics" class="section level2">
+<h2>Global and Local efficiency as network metrics</h2>
+<p>Following Latora et al (2001), a local efficiency score <span class="math inline">\(E_{loc}\)</span> for the entire network <span class="math inline">\(G\)</span>, can then be calculated as the mean efficiency of all subgraphs, i.e.</p>
+<p><span class="math display">\[E_{loc}(G)~=~\frac{1}{N}\sum_{i \in G}E(G_i),~where  ~ i \notin G_i\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">E_loc &lt;-<span class="st"> </span><span class="kw">mean</span>(<span class="kw">local_efficiency</span>(Koenigsberg))</code></pre></div>
+<p>Opposed to <span class="math inline">\(E_{loc}\)</span>, the efficiency of the graph <span class="math inline">\(E\)</span> is labelled <em>global</em> efficiency <span class="math inline">\(E_{glob}\)</span>. These two are close for graphs with small differences between the distances. This holds for our example of <code>Koenigsberg</code>, where they are in fact the same:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">E_glob &lt;-<span class="st"> </span><span class="kw">efficiency</span>(Koenigsberg)
+<span class="kw">data.frame</span>(E_glob,E_loc)</code></pre></div>
+<pre><code>##      E_glob     E_loc
+## 1 0.9166667 0.9166667</code></pre>
+<p><span class="math inline">\(E_{glob}\)</span> is the efficiency of a parallel system, while <span class="math inline">\(E_{loc}\)</span> is describing the efficiency of a sequential system.</p>
+</div>
+</div>
+<div id="network-vulnerability" class="section level1">
+<h1>Network vulnerability</h1>
+<p>In addition and building on the concept of efficiency, network vulnerability is implemented with the <code>vulnerability</code> function: In a vulnearability analysis, the goal is to investigate the impact of <em>attacks</em> or <em>improvements</em> of infrastructure components on the performance of the overall network. <em>Efficiency</em> is used as the metric for network performance. A vulnerability score for each node <span class="math inline">\(i\)</span> in <span class="math inline">\(G\)</span>, is computed as:</p>
+<p><span class="math display">\[V(i)=1-\frac{E(G_i)}{E(G)}, ~where  ~ i \notin G_i\]</span> What if the <code>Altstadt-Loebenicht</code> became impassable? The resulting network <span class="math inline">\(G_i\)</span> would be</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g_i &lt;-<span class="st"> </span><span class="kw">delete_vertices</span>(Koenigsberg, <span class="dv">1</span>)
+<span class="kw">plot</span>(g_i)</code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAABAlBMVEUAAAAAACAAADgAAE4AAGMAAHcAAIsAAJUAAJ8AALMAJpsAOp8AOscAPzgARJ8AZtomAIsmX6Q0AIs6AIs6AJ86ALM6Op86Osc6ZrM6Zsc6kO1EAItEeaREealcAItcP2NccgBfJotfeZtfkalmAItmALNmZrNmZtpmkMdmkO1mttpmtu1mtv95RIt5qamBJIuBiQCBiSCQOouQOp+QZseQkNqQtseQtv+Q2/+RX5GRqamknwCpeZWpkZupqaSpqam2Zou2ZrO228e2/9q2///FWnfbkJ/bkLPbkMfbtrPb28fb///mcmPmiU7mnwDmnyD/trP/tsf/28f//9r//+3/////QEL2AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAHvElEQVR4nO3diXbbRACFYdE00wQCDXXZDOkCLktrtrC5QGoXXLGEGCNb7/8qzKZEdhRfydJ4Rvb9z6ExkqN6vsoa55xWE6VsZZHvFxB6BAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFABAIRCEQgEIFA7Qaanwohuk5/i3YDpWl8OF7eFEVNDqr1QEfnS1uiyWTS4Ki2Dkj5NCm0NUDqcvT6z8Nf97/9Wrz5rxB35T4h5BtQ7ahxmWo70HOJonrx+G1JcfR3R+x/84/Yj6YHg+S98/TP8fy7QZp0+mv/Bq0EGl6VnUFTdbGWEEknmlzci9Lk/iDp3FU7hKg107kCGslXdXQ+LXhts16/4OHld934Z51TyW3NgPRsNut1k85JtCcPok6apCPfaNNrV/FqOTuD9Gk9P70+3iuVWW+JY9RNRwvjGRar5DJA/w2m6lDy0MlxhqMOLbdOr38OqJRboNHq9/7StcHSQZR85sx5Mp6fygdSKweU/KTI5YXpPJ2G9xZTr7Do/EnzH+RyQIrj7PiknMpl+pO00FOWenh0PvtQiM87+r+DHzt6hzxP1Zd1cwj0LPOZ9Z6dZmPoprcePLoQcsPBID07/uixeEtNQWpwclZWG2tVRbdcDoGy67P8IzwYyGnXTLi3HoiHQux/MvzyzldJx+w47aop+rzObGxrFVB/ZIX0NeH+wEy4r13ce6TmYTMnmx2XU3RdoOZ93F6krZC9aJoJN8qA9Jysd1xN0bsGZIUyIDPh7kmgbE62O3L/WysHPo6BjJB1sBNuIqI99Rl3ZC46eoedomsCufBx/ElaTbHiDTPlHgz0hKsu2R8fv2v3mh1mip6KWvNxy4BWdtY5cXBUJz6+gPrNj8aNjxeg5Fj+TNr4eLYIyIyl0s8UJY/pIH9AzY7JlY9XoCZHtZ1AzQ3LmY9noMYGtrVADY3MnY93oEbG5tDHP1AToyNQhcM1nX+g2uNz6hMCUN0Rbj9QvSG69QkDqNYgdwKoxigd+4QCtPY4XfsEA7TuSHcHaL2hOvcJCGidwbr3CQlojeESaK3jNFpIQFUHvAmfsIAqDnkHgSqNeSM+BEIFBlRh1JvxaS/QhnyCAyo9cAKtf4hGCw6o3NA35kMgVHhAZQa/OZ92Am3QJ0QgPP6tB6p5Cm3Sh0CoEIHqX8QbrH1Am/Xx9W9Wa5wjBGrmZ7WmahvQpn28/bPwdd9FBFq9c+M+BEJ5u/PCWkKb92kXkAcfj/fuWGMuJ9DqfT58fN79pepk7sXH6+1xKk5WBFq9x4+P3xssVflLDJ58PN+BqsLnnd0EKj+f+/LxDVR6Qt9ZoJITljeflgD58/EPVGpK32mgElOWR58QgOAl2adPEEDomkyg1dccrz6BAK266Pj1CQVoxZuKQKab3lWefcIBuumsIdBlhSq+fUICKmLx7hMUUIELgRYb3vDVY2EBZSKLX7wWGJA1IdDNDS9/CcInPCDNsgNA+m7zfb2sRZl1G/I3An5hvjXO3fu26D7BDdy/vEzuzqCRuT99qXUtpgvraQzjO2P565VA0rm+3EbRNhe5A7LjiwuHsbxgwuIaCs81UG5Zkq08g/T9tdP594Un0PKaLHK0uU3x7SgaptsOlE7Veyz5Is3WvJBDeto7HKs1m37vqYWbsquMujm3eKo3me/cv/3LJDJA5jlqDQq9pIRZeUIf6LeCbWO9sEDNtVgWcwg0P5WjfzlWD/SyEH/pl27WbLLrIWhEtVrNSOTuaB+9MsuJiMvnqPUl0tGhXerpU3Oggm3K9PqSbLVyOc3Hh+PZZ2l+5aa++qpOGqsxkqeAMlhcNCJ6Jc+gSWTfYvo5HbMsgF3qyR6oYJs8VvJOkyeQU6BZr/uHmskWl4XQazbph7Hoy7MjzvHN9PssD2SeYzG6dkrMAy1sU+dq3eWglnL6QTE++EC92OVlIabm/aROrKlemmV52ZGra5B9TnZ62JUnroCWtqnPC41egRwD2TEvLAth1mxSD2MpE6u1EvQFJQ+kZjHz3fY56qG6pGUrT2RAy9tmT5rVSV3/qPHSvF67clNPX3b1mk1yi57K3pcf9/TaEkKth2T+8Oe5T9Iz+5zYruSWrTwh7AS3tM0cqtGFV8P7WaxO8x/kL81epbcLSE/xMc+gG3OwtPF2ATmIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQCACgQgEIhCIQKD/AdWGk9d/u7rUAAAAAElFTkSuQmCC" /><!-- --></p>
+<p>Using this package, the scores for<code>Koenigsberg</code> can be calculated:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vulnerability_nodes</span>(Koenigsberg) <span class="co">#I'd say this makes more sense</span></code></pre></div>
+<pre><code>## Altstadt-Loebenicht            Kneiphof  Vorstadt-Haberberg 
+##         -0.09090909          0.09090909         -0.09090909 
+##               Lomse 
+##          0.09090909</code></pre>
+<p>We can see that <code>Kneiphof</code> and <code>Lomse</code> are the most vulnerable nodes. If they became impassable, there would be less options to travel between <code>Altstadt-Loebenicht</code>and <code>Vorstadt_Haberberg</code>. Mathematically, a destruction of the latter two would “improve” travelling in the city, as the remaining system of quarters and bridges would be a complete graph.</p>
+<p>Using <code>vulnerability_edges</code>, we can make the same investigation for the edges in the graph:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vulnerability_edges</span>(Koenigsberg)</code></pre></div>
+<pre><code>## Kraemer Bruecke Schmiedebruecke     Holzbruecke    Honigbruecke 
+##      0.00000000      0.00000000      0.09090909      0.09090909 
+##    Hohe Bruecke  Gruene Bruecke  Koettelbruecke 
+##      0.09090909      0.00000000      0.00000000</code></pre>
+<p>Where there are more than one bridge connecting the quarters, vulnerability is <span class="math inline">\(0\)</span>.</p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-gol2004">
+<p>Gol’dshtein, Vladimir, GA Koganov, and Gregory I Surdutovich. 2004. “Vulnerability and Hierarchy of Complex Networks.” <em>arXiv Preprint Cond-Mat/0409298</em>.</p>
+</div>
+<div id="ref-latora2001">
+<p>Latora, Vito, and Massimo Marchiori. 2001. “Efficient Behavior of Small-World Networks.” <em>Physical Review Letters</em> 87 (19). APS: 198701.</p>
+</div>
+<div id="ref-latora2005">
+<p>———. 2005. “Vulnerability and Protection of Infrastructure Networks.” <em>Physical Review E</em> 71 (1). APS: 015103.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

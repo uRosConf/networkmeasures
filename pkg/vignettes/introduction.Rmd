@@ -5,43 +5,48 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
+bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{01_Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r,echo=FALSE}
+```{r, include=FALSE, ,echo=FALSE}
 library(networkmeasures)
 library(igraph)
 ```
 
-# Introduction
+This package is implementing efficiency and vulnerability as metrics for assessing network complexity. These metrics were first described by Latora et al [-@latora2001; -@latora2005] and Goldshtein et al [-@gol2004]. 
 
-This package is implementing metrics for assessing network complexity, as published by Latora et al (2001, 2005. Latora et al defined the following metrics:
 
-## Efficiency
+# Efficiency
 
 The network efficiency $E$ is desigend as a single metric to describe the small world behavior of a network. For a Graph $G$, the network efficency E is calculated as:
 
 $$ E(G)~=~\frac{\sum_{i\neq j \in G^{\epsilon_{ij}}}}{N(N-1)}~=~\frac{1}{N(N-1)}\sum\limits_{i \neq j \in G} \frac{1}{d_{ij}} $$
-Where $d_{ij}$ is the shortest path length between two points $i$ and $j$.It is normalized, by dividing with the efficiency of the ideal network $G_{id}$, in which all possible $N(N-1)/2$ edges are present. Thus $0 \leq E(G) \leq 1$.
 
-To examplify the interpretation, let's look at the `Koenigsberg` data set from the `igraphdata` package: It is the famous network of 7 bridges (edges) connecting the 4 districts (nodes) of the city Koenigsberg.  
+Where $d_{ij}$ is the shortest path length between two points $i$ and $j$. It is normalized, by dividing with the efficiency of the ideal network $G_{id}$, in which all possible $N(N-1)/2$ edges are present. Thus $0 \leq E(G) \leq 1$.
+
+To examplify the interpretation, we will use the `Koenigsberg` data set from the `igraphdata` package: It is the famous network of 7 bridges (edges) connecting the 4 districts (nodes) of the city Koenigsberg:  
 ```{r}
 data("Koenigsberg", package = "igraphdata")
 plot(Koenigsberg)
 ```
+
 We can see that the quarters are very well connected: A bridge is only missing between `Altstadt-Loebenicht`and `Vorstadt_Haberberg`. Otherwise, the graph would be complete. We can calculate $E(G)$ using the `efficiency()` function: 
 ```{r}
-E <- efficiency(Koenigsberg)
+efficiency(Koenigsberg)
 ```
-As expected, we get a value of `r E`, which is very close to the ideal value of $1$. We can conclude that people were able to move around very efficiently, using the city's bridge system.
+
+As expected, we get a value close to the ideal of $1$. People were able to move around the city very efficiently, using the city's bridge system.
+
 
 ## Local efficiency
 
-This idea can be expanded to investigate local properties of the graph. For this, we first need to define $G_i$ as the subgraph of the neighbors of i. For `Altstadt-Loebenicht` this graph would simply be:
-```{r}
+This idea is expanded to investigate local properties of the graph. We define $G_i$ as the subgraph of the neighbors of i. For the node `Altstadt-Loebenicht` this graph would simply be:
+
+```{r echo=FALSE}
 plot(make_ego_graph(Koenigsberg, order = 1, mindist = 1)[[1]])
 ```
 
@@ -51,35 +56,37 @@ The `local_efficiency()` function in this package, calculates the efficiency of 
 local_efficiency(Koenigsberg)
 ```
 
+
+## Global and Local efficiency as network metrics
+
 Following Latora et al (2001), a local efficiency score $E_{loc}$ for the entire network $G$, can then be calculated as the mean efficiency of all subgraphs, i.e.
-
-
 
 $$E_{loc}(G)~=~\frac{1}{N}\sum_{i \in G}E(G_i),~where  ~ i \notin G_i$$
 ```{r}
 E_loc <- mean(local_efficiency(Koenigsberg))
 ```
-Opposed to $E_{loc}$, the efficiency of the graph $E$ is labelled *global* efficiency $E_{glob}. Latora points out that these two are close for graphs with small differences between the distances. This holds for our example of `Koenigsberg`, where they are in fact identical:
+
+Opposed to $E_{loc}$, the efficiency of the graph $E$ is labelled *global* efficiency $E_{glob}$. These two are close for graphs with small differences between the distances. This holds for our example of `Koenigsberg`, where they are in fact the same:
+
 ```{r}
-E_glob <- E
+E_glob <- efficiency(Koenigsberg)
 data.frame(E_glob,E_loc)
 ```
 
 $E_{glob}$ is the efficiency of a parallel system, while $E_{loc}$ is describing the efficiency of a sequential system. 
 
-## Network vulnerability
 
-In addition and building on the concept of efficiency, network vulnerability as decribed by Latora et al (2005) is implemented with the `vulnerability` function: In a vulnearability anlysis, the goal is to investigate the impact of *attacks* or *improvements* of infrastructure components on the performance of the overall network. *Efficiency* is used as the metric for network performance. A vulnarability score each node $i$ in $G$, is computed as:
+# Network vulnerability
+
+In addition and building on the concept of efficiency, network vulnerability is implemented with the `vulnerability` function: In a vulnearability analysis, the goal is to investigate the impact of *attacks* or *improvements* of infrastructure components on the performance of the overall network. *Efficiency* is used as the metric for network performance. A vulnerability score for each node $i$ in $G$, is computed as:
 
 $$V(i)=1-\frac{E(G_i)}{E(G)}, ~where  ~ i \notin G_i$$
 What if the `Altstadt-Loebenicht` became impassable? The resulting network $G_i$ would be
-```{r}
-g_i <- delete_edges(Koenigsberg, incident_edges(Koenigsberg, 1)[[1]])
-plot(g_i) # see comments in vulnerability.. really skews the E score
-g_i_better <- delete_vertices(Koenigsberg, 1)
-plot(g_i_better)
-```
 
+```{r}
+g_i <- delete_vertices(Koenigsberg, 1)
+plot(g_i)
+```
 
 Using this package, the scores for`Koenigsberg` can be calculated: 
 
@@ -87,14 +94,16 @@ Using this package, the scores for`Koenigsberg` can be calculated:
 vulnerability_nodes(Koenigsberg) #I'd say this makes more sense
 ```
 
-We can see that `Kneiphof` and `Lomse` are the most vulnerable nodes. If they became impassable, there would be less options to travel between `Altstadt-Loebenicht`and `Vorstadt_Haberberg`. 
-Mathematically, a destruction of the latter two would "improve" travelling in the city, as the remaining system of quarters and bridges would be a complete graph.
+We can see that `Kneiphof` and `Lomse` are the most vulnerable nodes. If they became impassable, there would be less options to travel between `Altstadt-Loebenicht`and `Vorstadt_Haberberg`. Mathematically, a destruction of the latter two would "improve" travelling in the city, as the remaining system of quarters and bridges would be a complete graph.
 
 Using `vulnerability_edges`, we can make the same investigation for the edges in the graph:
+
 ```{r}
 vulnerability_edges(Koenigsberg)
 ```
 Where there are more than one bridge connecting the quarters, vulnerability is $0$.
 
+
+# References
 
 
