@@ -101,7 +101,17 @@ Using `vulnerability_edges`, we can make the same investigation for the edges in
 ```{r}
 vulnerability_edges(Koenigsberg)
 ```
-Where there are more than one bridge connecting the quarters, vulnerability is $0$.
+Where there are more than one bridge connecting the quarters, vulnerability is $0$. See below
+```{r}
+col_vec <- vulnerability_edges(Koenigsberg) %>% 
+  map_chr(~if(.x == 0) "green" else "black")
+plot(
+  Koenigsberg,
+  vertex.label = NA,
+  edge.label = edge_attr(Koenigsberg)$name,
+  edge.color = col_vec
+)
+```
 
 
 # References
