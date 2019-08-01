@@ -91,7 +91,7 @@ plot(g_i)
 Using this package, the scores for`Koenigsberg` can be calculated: 
 
 ```{r}
-vulnerability_nodes(Koenigsberg) #I'd say this makes more sense
+vulnerability_nodes(Koenigsberg)
 ```
 
 We can see that `Kneiphof` and `Lomse` are the most vulnerable nodes. If they became impassable, there would be less options to travel between `Altstadt-Loebenicht`and `Vorstadt_Haberberg`. Mathematically, a destruction of the latter two would "improve" travelling in the city, as the remaining system of quarters and bridges would be a complete graph.
