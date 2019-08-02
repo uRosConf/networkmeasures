@@ -1,0 +1,35 @@
+---
+output: github_document
+bibliography: pkg/vignettes/references.bib
+---
+
+# Overview
+
+The **networkmeasures** package is implementing efficiency and vulnerability as metrics for assessing network complexity, e.g. traffic, family or business network. These metrics were first described by Latora et al [-@latora2001; -@latora2005] and Goldshtein et al [-@gol2004]. 
+
+## Background
+
+This package was developed during uRos the 2019 Unconf. We implemented:
+
+1) The unweighted global efficieny measure for an igraph network (reference)
+- naive implementation, using the average inverse shortest path between all the nodes
+2) The unweighted local efficiency measure.
+
+# Installation
+
+You can install the development version from github, using the `remotes` package:
+
+```{r eval=FALSE, include=TRUE}
+remotes::install_github('uRosConf/networkmeasures/pkg', build_vignettes = TRUE)
+```
+
+
+# Usage
+
+The vignette [introduction](pkg/doc/introduction.html) provides an intro to the functions and the theory behind them.
+
+```{r eval=FALSE, include=TRUE}
+vignette("introduction", package = "networkmeasures")
+```
+
+# References
