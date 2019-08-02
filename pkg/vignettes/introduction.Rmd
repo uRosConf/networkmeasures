@@ -15,6 +15,7 @@ vignette: >
 ```{r, include=FALSE, ,echo=FALSE}
 library(networkmeasures)
 library(igraph)
+knitr::opts_chunk$set(fig.width=7, fig.height=5, fig.align = "center") 
 ```
 
 This package is implementing efficiency and vulnerability as metrics for assessing network complexity. These metrics were first described by Latora et al [-@latora2001; -@latora2005] and Goldshtein et al [-@gol2004]. 
@@ -46,7 +47,7 @@ As expected, we get a value close to the ideal of $1$. People were able to move 
 
 This idea is expanded to investigate local properties of the graph. We define $G_i$ as the subgraph of the neighbors of i. For the node `Altstadt-Loebenicht` this graph would simply be:
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.height = 3, fig.width = 4}
 plot(make_ego_graph(Koenigsberg, order = 1, mindist = 1)[[1]])
 ```
 
@@ -88,7 +89,7 @@ g_i <- delete_vertices(Koenigsberg, 1)
 plot(g_i)
 ```
 
-Using this package, the scores for`Koenigsberg` can be calculated: 
+Using this package, the scores for `Koenigsberg` can be calculated: 
 
 ```{r}
 vulnerability_nodes(Koenigsberg)
