@@ -27,7 +27,7 @@ remotes::install_github('uRosConf/networkmeasures/pkg', build_vignettes = TRUE)
 Usage
 =====
 
-The vignette [introduction](pkg/doc/introduction.html) provides an intro to the functions and the theory behind them.
+The vignette **introduction** provides an intro to the functions and the theory behind them.
 
 ``` r
 vignette("introduction", package = "networkmeasures")
